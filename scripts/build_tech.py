@@ -105,6 +105,24 @@ if "<head>" not in html:
 if verification_tag not in html:
     html = html.replace("<head>", "<head>" + verification_tag, 1)
     home.write_text(html, encoding="utf-8")
+# Regression checks: new interactive experiences and expanded catalogs must be deployed.
+required = [
+    "tech-x/index.html", "tech-x/x.js", "tech-x/x.css",
+    "tech-x-home.css", "library-external.js", "library-external-data.js",
+    "library-external.css", "store-software.js", "store-catalog.js",
+    "resursi/vodic-web-od-zahtjeva-do-stranice.txt",
+    "resursi/radni-list-tech-dozvole.txt",
+    "resursi/predlozak-izvor-i-obecanje.txt",
+]
+for relative in required:
+    if not (output / relative).is_file():
+        raise SystemExit(f"TECH deployment missing required resource: {relative}")
+home_markup = (output / "index.html").read_text(encoding="utf-8")
+assert 'href="./tech-x/"' in home_markup, "TECH X link missing from portal home"
+assert 'ČITAJ TECH ZONU' in home_markup, "Editorial button missing from home"
+assert 'ARHIVA VIJESTI' in home_markup, "Archive route missing from home"
+assert '<loc>https://tech.brzoilokalno.com/tech-x/</loc>' in (output / "sitemap.xml").read_text(encoding="utf-8"), "TECH X missing from sitemap"
+
 assert (output / "index.html").is_file()
 assert (output / "sitemap.xml").is_file()
 assert f"https://{domain}/" in (output / "index.html").read_text(encoding="utf-8")
