@@ -1,0 +1,25 @@
+name: Check TECH sitemap accessibility
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-sitemap.yml"
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check public DNS and HTTPS response
+        shell: bash
+        run: |
+          set -uo pipefail
+          echo "DNS resolution for TECH subdomain:"
+          getent ahostsv4 tech.brzoilokalno.com || true
+          for url in "https://tech.brzoilokalno.com/" "https://tech.brzoilokalno.com/sitemap.xml" "https://tech.brzoilokalno.com/robots.txt"; do
+            echo "=== $url ==="
+            curl -L --max-time 20 --connect-timeout 10 --retry 2 --retry-delay 3 -sS -o /tmp/tech-response -w "HTTP: %{http_code}; Content type: %{content_type}; Final URL: %{url_effective}; bytes: %{size_download}\n" "$url" || true
+            head -c 240 /tmp/tech-response 2>/dev/null || true
+            echo
+          done
