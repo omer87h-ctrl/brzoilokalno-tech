@@ -47,3 +47,7 @@ Replaced the awkward 'Ne samo čitaj' slogan with a grammatically natural headli
 ## TECH X: real in-browser software
 
 TECH X now includes a working Web Studio (`/tech-x/studio.html`) that edits HTML/CSS/JavaScript, previews code in a restricted frame, saves local projects, imports/exports JSON, and downloads portable HTML. Real browser tools (`/tech-x/alati.html`) resize and convert images, parse CSV to JSON, validate JSON, and edit/export restricted SVG. The build workflow checks for all six new app assets. New page links have been included in the TECH sitemap; no Android/PWA files were changed.
+
+## Image-free no-code release
+
+TECH X gains an image-free visual website builder at `/tech-x/vizuelni-studio.html`, with original CSS background patterns, themes, text sections, reorderable cards and downloadable HTML. The graphics utility generates original vector SVG art rather than accepting photo uploads. No photos are uploaded or copied. Build checks require the visual builder assets.
