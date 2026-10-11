@@ -15,3 +15,7 @@ The TECH portal source remains in [brzoilokalno-website/tech](https://github.com
 ## Editorial identity
 
 The TECH portal homepage headline is **TEHNOLOGIJA. ZNANJE. PRILIKE.** and its navigation now labels the existing writing/editor area **Kreiraj**; the old editing URL and all draft features remain intact. It is still hosted at https://tech.brzoilokalno.com/. This update does not change the app, the main site's domain, or Search Console properties.
+
+## Application links
+
+The TECH Free Store product card links PWA to https://brzoilokalno.com/app/ and Huawei AppGallery to the existing official download landing page. Google Play follows the main website's currently labelled coming-soon status until its active listing is verified.
