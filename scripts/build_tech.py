@@ -5,6 +5,7 @@ No changes are made to the source website, Android app, or its PWA.
 The generated output is served from tech.brzoilokalno.com.
 """
 from pathlib import Path
+import json
 import re
 import shutil
 
@@ -67,6 +68,33 @@ for unused in ("README.md", "update-news.py"):
     target = output / unused
     if target.is_file():
         target.unlink()
+
+# Signal a separate TECH website name to Google on the subdomain root.
+# Reuse the existing CollectionPage markup and connect it to a new WebSite node.
+# The primary brzoilokalno.com site's organization and application are untouched.
+home = output / "index.html"
+html = home.read_text(encoding="utf-8")
+match = re.search(r'<script type="application/ld\\+json">([\\s\\S]*?)</script>', html)
+if not match:
+    raise SystemExit("TECH home page is missing its JSON-LD block")
+page = json.loads(match.group(1))
+if page.get("@type") != "CollectionPage":
+    raise SystemExit("Unexpected TECH structured data; aborting SEO update")
+page.pop("@context", None)
+page["isPartOf"] = {"@id": f"https://{domain}/#website"}
+website = {
+    "@type": "WebSite",
+    "@id": f"https://{domain}/#website",
+    "name": "Brzo i Lokalno TECH",
+    "alternateName": ["Brzo i Lokalno Tech", "tech.brzoilokalno.com"],
+    "url": f"https://{domain}/",
+    "inLanguage": "bs",
+    "publisher": {"@id": "https://brzoilokalno.com/#organization"}
+}
+graph = {"@context": "https://schema.org", "@graph": [website, page]}
+new_jsonld = '<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False, separators=(",", ":")) + '</script>'
+html = html[:match.start()] + new_jsonld + html[match.end():]
+home.write_text(html, encoding="utf-8")
 
 # Search Console ownership applies to the separate TECH host only.
 home = output / "index.html"
