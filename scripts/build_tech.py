@@ -68,6 +68,15 @@ for unused in ("README.md", "update-news.py"):
     if target.is_file():
         target.unlink()
 
+# Search Console ownership applies to the separate TECH host only.
+home = output / "index.html"
+html = home.read_text(encoding="utf-8")
+verification_tag = '<meta name="google-site-verification" content="ILDuA90WSVz2FTZdmWleQ0lzbGCLmFndZ6wlT5V74Ow" />'
+if "<head>" not in html:
+    raise SystemExit("TECH home page has no <head> for verification")
+if verification_tag not in html:
+    html = html.replace("<head>", "<head>" + verification_tag, 1)
+    home.write_text(html, encoding="utf-8")
 assert (output / "index.html").is_file()
 assert (output / "sitemap.xml").is_file()
 assert f"https://{domain}/" in (output / "index.html").read_text(encoding="utf-8")
