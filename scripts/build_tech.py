@@ -108,6 +108,8 @@ if verification_tag not in html:
 # Regression checks: new interactive experiences and expanded catalogs must be deployed.
 required = [
     "tech-x/index.html", "tech-x/x.js", "tech-x/x.css",
+    "tech-x/studio.html", "tech-x/studio.js", "tech-x/studio.css",
+    "tech-x/alati.html", "tech-x/alati.js", "tech-x/alati.css",
     "tech-x-home.css", "library-external.js", "library-external-data.js",
     "library-external.css", "store-software.js", "store-catalog.js",
     "resursi/vodic-web-od-zahtjeva-do-stranice.txt",
