@@ -27,3 +27,7 @@ The TECH Free Store product card links PWA to https://brzoilokalno.com/app/ and 
 ## October 11: distinct TECH experiences
 
 TECH Svijet now presents an interactive eight-category atlas with four explained topics per category. TECH Zona has a separate editorial magazine layout with featured original articles and an index of published texts. Upstream source: `brzoilokalno-website/tech`. Android app, PWA, Firebase and main-site pages are not changed by this source-only TECH update.
+
+## Navigation fix
+
+Homepage TECH Zona and TECH Svijet links now explicitly route to different pages with a query version to avoid stale navigation; main menu and interactive homepage links use the same destinations. This README update triggers the subdomain deployment workflow.
