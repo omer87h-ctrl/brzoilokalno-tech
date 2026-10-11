@@ -23,3 +23,7 @@ The TECH Free Store product card links PWA to https://brzoilokalno.com/app/ and 
 ## October 11: clearer content sections
 
 **TECH Svijet** = subject explanations and discovery. **TECH Zona** = original editorial articles and saved reading (same on-device bookmark key). **TECH Akademija** = 15 interactive lessons, quizzes, notes and progress under the existing /discovery.html path. No changes to the main Android/PWA app or separate domain SEO settings.
+
+## October 11: distinct TECH experiences
+
+TECH Svijet now presents an interactive eight-category atlas with four explained topics per category. TECH Zona has a separate editorial magazine layout with featured original articles and an index of published texts. Upstream source: `brzoilokalno-website/tech`. Android app, PWA, Firebase and main-site pages are not changed by this source-only TECH update.
