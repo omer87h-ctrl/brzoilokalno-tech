@@ -43,3 +43,7 @@ Homepage news CTAs and news ticker now lead to the single TECH Arhiva; the repea
 ## TECH X editorial and first-screen quality pass
 
 Replaced the awkward 'Ne samo čitaj' slogan with a grammatically natural headline, clarified the four real experiments, removed the generic orbit art in favor of a schematic preview and versioned the standalone assets. The deployment workflow is triggered by this commit.
+
+## TECH X: real in-browser software
+
+TECH X now includes a working Web Studio (`/tech-x/studio.html`) that edits HTML/CSS/JavaScript, previews code in a restricted frame, saves local projects, imports/exports JSON, and downloads portable HTML. Real browser tools (`/tech-x/alati.html`) resize and convert images, parse CSV to JSON, validate JSON, and edit/export restricted SVG. The build workflow checks for all six new app assets. New page links have been included in the TECH sitemap; no Android/PWA files were changed.
