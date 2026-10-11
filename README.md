@@ -11,3 +11,7 @@ The TECH portal source remains in [brzoilokalno-website/tech](https://github.com
 - The main-domain sitemap contains only main-platform URLs. A legacy TECH sitemap remains temporarily available for Google to re-crawl old addresses; the independently generated TECH sitemap lists new URLs.
 - Do not remove old pages or their legacy sitemap until the migration has been verified in Search Console.
 - Auto-refresh runs every six hours and may be run manually from GitHub Actions.
+
+## Editorial identity
+
+The TECH portal homepage headline is now **TEHNOLOGIJA. ZNANJE. PRILIKE.** and the writing/editor area is labeled **Studio** consistently. It is still hosted at https://tech.brzoilokalno.com/. This update does not change the app, the main site's domain, or Search Console properties.
