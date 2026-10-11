@@ -74,7 +74,7 @@ for unused in ("README.md", "update-news.py"):
 # The primary brzoilokalno.com site's organization and application are untouched.
 home = output / "index.html"
 html = home.read_text(encoding="utf-8")
-match = re.search(r'<script type="application/ld\\+json">([\\s\\S]*?)</script>', html)
+match = re.search(r'<script type="application/ld\+json">([\s\S]*?)</script>', html)
 if not match:
     raise SystemExit("TECH home page is missing its JSON-LD block")
 page = json.loads(match.group(1))
