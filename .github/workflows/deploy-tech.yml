@@ -1,0 +1,45 @@
+name: Deploy TECH subdomain
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build_tech.py"
+      - ".github/workflows/deploy-tech.yml"
+      - "README.md"
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: tech-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployment configuration
+        uses: actions/checkout@v4
+      - name: Checkout source website
+        uses: actions/checkout@v4
+        with:
+          repository: omer87h-ctrl/brzoilokalno-website
+          ref: main
+          path: upstream
+          persist-credentials: false
+      - name: Build independent TECH website
+        run: python3 scripts/build_tech.py
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload output
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
