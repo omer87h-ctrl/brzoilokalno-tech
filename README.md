@@ -19,3 +19,7 @@ The TECH portal homepage headline is **TEHNOLOGIJA. ZNANJE. PRILIKE.** and its n
 ## Application links
 
 The TECH Free Store product card links PWA to https://brzoilokalno.com/app/ and Huawei AppGallery to the existing official download landing page. Google Play is linked to https://play.google.com/store/apps/details?id=com.brzoilokalno and the outdated coming-soon labels have been removed.
+
+## October 11: clearer content sections
+
+**TECH Svijet** = subject explanations and discovery. **TECH Zona** = original editorial articles and saved reading (same on-device bookmark key). **TECH Akademija** = 15 interactive lessons, quizzes, notes and progress under the existing /discovery.html path. No changes to the main Android/PWA app or separate domain SEO settings.
