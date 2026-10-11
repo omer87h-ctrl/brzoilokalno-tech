@@ -1,4 +1,4 @@
-name: Check TECH sitemap accessibility
+name: Check TECH migration and sitemap
 on:
   workflow_dispatch:
   push:
@@ -11,15 +11,35 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check public DNS and HTTPS response
+      - name: Check both sites, old redirects and new sitemap
         shell: bash
         run: |
-          set -uo pipefail
-          echo "DNS resolution for TECH subdomain:"
-          getent ahostsv4 tech.brzoilokalno.com || true
-          for url in "https://tech.brzoilokalno.com/" "https://tech.brzoilokalno.com/sitemap.xml" "https://tech.brzoilokalno.com/robots.txt"; do
-            echo "=== $url ==="
-            curl -L --max-time 20 --connect-timeout 10 --retry 2 --retry-delay 3 -sS -o /tmp/tech-response -w "HTTP: %{http_code}; Content type: %{content_type}; Final URL: %{url_effective}; bytes: %{size_download}\n" "$url" || true
-            head -c 240 /tmp/tech-response 2>/dev/null || true
-            echo
-          done
+          set -euo pipefail
+          check_url() {
+            local url="$1" output="$2"
+            curl --fail --silent --show-error --location --retry 3 --retry-delay 3 --max-time 35 "$url" -o "$output"
+            echo "OK: $url ($(wc -c < "$output") bytes)"
+          }
+          check_url https://tech.brzoilokalno.com/sitemap.xml /tmp/new-map.xml
+          grep -Fq '<loc>https://tech.brzoilokalno.com/</loc>' /tmp/new-map.xml
+          if grep -Fq 'https://brzoilokalno.com/tech/' /tmp/new-map.xml; then
+            echo 'ERROR: new sitemap still contains old TECH URLs' >&2
+            exit 1
+          fi
+          check_url https://tech.brzoilokalno.com/robots.txt /tmp/new-robots
+          grep -Fq 'Sitemap: https://tech.brzoilokalno.com/sitemap.xml' /tmp/new-robots
+          check_url https://brzoilokalno.com/sitemap.xml /tmp/main-map.xml
+          if grep -Fq '<loc>https://brzoilokalno.com/tech/' /tmp/main-map.xml; then
+            echo 'ERROR: main-domain sitemap advertises duplicate TECH URLs' >&2
+            exit 1
+          fi
+          grep -Fq '<loc>https://brzoilokalno.com/</loc>' /tmp/main-map.xml
+          check_url https://brzoilokalno.com/tech/ /tmp/legacy-home
+          grep -Fq 'data-tech-migration="2026-10"' /tmp/legacy-home
+          grep -Fq 'rel="canonical" href="https://tech.brzoilokalno.com/"' /tmp/legacy-home
+          check_url https://brzoilokalno.com/tech/clanci/kako-provjeriti-tech-vijest.html /tmp/legacy-article
+          grep -Fq 'data-tech-migration="2026-10"' /tmp/legacy-article
+          grep -Fq 'rel="canonical" href="https://tech.brzoilokalno.com/clanci/kako-provjeriti-tech-vijest.html"' /tmp/legacy-article
+          check_url https://tech.brzoilokalno.com/ /tmp/new-home
+          grep -Fq 'rel="canonical" href="https://tech.brzoilokalno.com/"' /tmp/new-home
+          echo 'Verified migration: old TECH URLs redirect for browsers, cross-domain canonicals set, and new sitemap contains only the new host.'
