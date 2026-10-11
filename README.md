@@ -35,3 +35,7 @@ Homepage TECH Zona and TECH Svijet links now explicitly route to different pages
 ## Hero button correction
 
 The top orange homepage button now reads ČITAJ TECH ZONU and links to the editorial TECH Zona. The lower TECH Svijet entry remains unchanged. Deploy the latest upstream tech source.
+
+## October 11: portal-wide navigation consistency
+
+Homepage news CTAs and news ticker now lead to the single TECH Arhiva; the repeated news/archive CTA under TECH Svijet was removed. TECH Zona is labeled editorial articles, TECH Svijet retains its topic atlas and forwards archival browsing to TECH Arhiva. Sources editorial and submission CTA text were clarified, and obsolete duplicate TECH Svijet feed scripting was removed. This commit triggers independent TECH Pages deployment from the updated source.
