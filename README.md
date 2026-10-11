@@ -31,3 +31,7 @@ TECH Svijet now presents an interactive eight-category atlas with four explained
 ## Navigation fix
 
 Homepage TECH Zona and TECH Svijet links now explicitly route to different pages with a query version to avoid stale navigation; main menu and interactive homepage links use the same destinations. This README update triggers the subdomain deployment workflow.
+
+## Hero button correction
+
+The top orange homepage button now reads ČITAJ TECH ZONU and links to the editorial TECH Zona. The lower TECH Svijet entry remains unchanged. Deploy the latest upstream tech source.
