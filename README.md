@@ -14,4 +14,4 @@ The TECH portal source remains in [brzoilokalno-website/tech](https://github.com
 
 ## Editorial identity
 
-The TECH portal homepage headline is now **TEHNOLOGIJA. ZNANJE. PRILIKE.** and the writing/editor area is labeled **Studio** consistently. It is still hosted at https://tech.brzoilokalno.com/. This update does not change the app, the main site's domain, or Search Console properties.
+The TECH portal homepage headline is **TEHNOLOGIJA. ZNANJE. PRILIKE.** and its navigation now labels the existing writing/editor area **Kreiraj**; the old editing URL and all draft features remain intact. It is still hosted at https://tech.brzoilokalno.com/. This update does not change the app, the main site's domain, or Search Console properties.
