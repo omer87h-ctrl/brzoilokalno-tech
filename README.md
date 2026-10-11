@@ -51,3 +51,7 @@ TECH X now includes a working Web Studio (`/tech-x/studio.html`) that edits HTML
 ## Image-free no-code release
 
 TECH X gains an image-free visual website builder at `/tech-x/vizuelni-studio.html`, with original CSS background patterns, themes, text sections, reorderable cards and downloadable HTML. The graphics utility generates original vector SVG art rather than accepting photo uploads. No photos are uploaded or copied. Build checks require the visual builder assets.
+
+## TECH X six-tool creator suite
+
+Added four operational no-photo creators at `/tech-x/dokumenti.html`, `/tech-x/plakati.html`, `/tech-x/prezentacije.html`, and `/tech-x/dijagrami.html` alongside the existing image-free visual website builder and advanced Web Studio. Each editor locally produces real downloadable artifacts or printable documents; no uploads or accounts are required. Homepage includes a six-entry grid, sitemap and privacy copy updated; build script checks each new asset. This README commit triggers independent TECH deployment.
