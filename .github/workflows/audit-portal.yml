@@ -1,0 +1,31 @@
+name: Read-only whole TECH portal audit
+on:
+  push:
+    branches: [audit/whole-portal-2026-10-12]
+    paths: [scripts/portal-audit.cjs, .github/workflows/audit-portal.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read-only public portal audit in real Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix /tmp/portal-qa --no-audit --no-fund playwright@1.56.1 axe-core@4.10.3
+          export TEZ_CHROME="$(command -v google-chrome)"
+          node scripts/portal-audit.cjs
+      - name: Preserve audit evidence and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: whole-tech-portal-audit
+          path: portal-audit-output/
+          retention-days: 7
