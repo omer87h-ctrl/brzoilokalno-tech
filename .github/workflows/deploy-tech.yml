@@ -63,6 +63,7 @@ jobs:
           qa_server_pid=$!
           trap 'kill "$qa_server_pid" || true' EXIT
           export TEZ_CHROME="$(command -v google-chrome)"
+          node scripts/test_workspace.cjs
           node scripts/test_visits.cjs
           node scripts/smoke_tech.cjs
           TECH_AUDIT_ORIGIN=http://127.0.0.1:4173 TECH_AUDIT_COMPACT=1 TECH_AUDIT_ENFORCE=1 node scripts/portal-audit.cjs
@@ -108,7 +109,11 @@ jobs:
           curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/visits.js?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-visits.js
           grep -Fq 'portal-2026-10-12.svg' /tmp/tech-live-visits.js
           grep -Fq 'globalPrivacyControl' /tmp/tech-live-visits.js
-          echo "Confirmed counter integration, corrected name, app search metadata and compatible old-route redirect."
+          curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/environment-zero-to-one/moji-radovi.html?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-workspace.html
+          grep -Fq 'works-backup' /tmp/tech-live-workspace.html
+          curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/environment-zero-to-one/vizuelni-studio.html?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-builder.html
+          grep -Fq 'visual-onboarding-form' /tmp/tech-live-builder.html
+          echo "Confirmed connected workspace, guided builder, counter integration and portal navigation."
           curl --fail --silent --show-error --max-time 25 https://brzoilokalno.com/ -o /tmp/main-platform.html
           test -s /tmp/main-platform.html
           echo "Confirmed public TECH release, creator core, and main-platform availability."

@@ -113,6 +113,8 @@ if verification_tag not in html:
 # Regression checks: new interactive experiences and expanded catalogs must be deployed.
 required = [
     "application-data.js",
+    "tech-x/moji-radovi.html", "tech-x/moji-radovi.js", "tech-x/projekti.html", "tech-x/projekti.js",
+    "tech-x/workspace.css", "tech-x/guided-builder.js", "tech-x/guided-builder.css",
     "tech-x/core.js", "tech-x/environment.css", "tech-x/resources.html", "tech-x/resources.js", "tech-x/resources-data.js",
     "tech-x/index.html", "tech-x/x.js", "tech-x/x.css",
     "tech-x/studio.html", "tech-x/studio.js", "tech-x/studio.css",
