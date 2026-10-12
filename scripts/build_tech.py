@@ -112,6 +112,7 @@ if verification_tag not in html:
     home.write_text(html, encoding="utf-8")
 # Regression checks: new interactive experiences and expanded catalogs must be deployed.
 required = [
+    "application-data.js",
     "tech-x/core.js", "tech-x/environment.css", "tech-x/resources.html", "tech-x/resources.js", "tech-x/resources-data.js",
     "tech-x/index.html", "tech-x/x.js", "tech-x/x.css",
     "tech-x/studio.html", "tech-x/studio.js", "tech-x/studio.css",
@@ -176,7 +177,7 @@ class VisibleText(HTMLParser):
 for page_path in output.rglob("*.html"):
     parser = VisibleText()
     parser.feed(page_path.read_text(encoding="utf-8"))
-    assert not re.search(r"\bTECH\s*X\b", " ".join(parser.parts), re.I), page_path
+    assert not re.search(r"\bTECH[\s/·:_–—-]*X\b", " ".join(parser.parts), re.I), page_path
 
 print(f"Built separate TECH website for https://{domain}/")
 

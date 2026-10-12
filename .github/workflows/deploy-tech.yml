@@ -58,12 +58,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm install --prefix /tmp/tez-qa --no-audit --no-fund playwright@1.56.1
+          npm install --prefix /tmp/tez-qa --no-audit --no-fund playwright@1.56.1 axe-core@4.10.3
           python3 -m http.server 4173 --bind 127.0.0.1 --directory _site > /tmp/tech-qa-http.log 2>&1 &
           qa_server_pid=$!
           trap 'kill "$qa_server_pid" || true' EXIT
           export TEZ_CHROME="$(command -v google-chrome)"
           node scripts/smoke_tech.cjs
+          TECH_AUDIT_ORIGIN=http://127.0.0.1:4173 TECH_AUDIT_COMPACT=1 TECH_AUDIT_ENFORCE=1 node scripts/portal-audit.cjs
+      - name: Preserve whole portal regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tech-whole-portal-regression
+          path: portal-audit-output/
+          retention-days: 7
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload verified TECH output
@@ -90,7 +98,12 @@ jobs:
           grep -Fq '<strong>TECH<br>ENVIRONMENT<br><em>ZERO TO ONE</em></strong>' /tmp/tech-live-home.html
           curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/tech-x/?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-legacy.html
           grep -Fq 'location.replace("/environment-zero-to-one/"' /tmp/tech-live-legacy.html
-          echo "Confirmed new public name and compatible old-route redirect."
+          curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/environment-zero-to-one/?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-center.html
+          grep -Fq '<strong>TECH ENVIRONMENT<br>ZERO TO ONE</strong>' /tmp/tech-live-center.html
+          if grep -Eq 'TECH[[:space:]]*/[[:space:]]*X' /tmp/tech-live-center.html; then exit 1; fi
+          curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/application-data.js?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-applications.js
+          grep -Fq 'CV, dokument i poslovna ponuda' /tmp/tech-live-applications.js
+          echo "Confirmed corrected name, app search metadata and compatible old-route redirect."
           curl --fail --silent --show-error --max-time 25 https://brzoilokalno.com/ -o /tmp/main-platform.html
           test -s /tmp/main-platform.html
           echo "Confirmed public TECH release, creator core, and main-platform availability."

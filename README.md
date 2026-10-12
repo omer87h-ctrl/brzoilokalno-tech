@@ -14,3 +14,9 @@ Local build: `python3 scripts/build_tech.py` from this directory, with TECH at `
 Generated `_site/` is a review artifact and must not be confused with a published site.
 External GitHub raw-feed URLs retain their source `/tech/` directory; only quoted root-relative TECH routes are rewritten.
 Do not alter the main platform for this release. Browser/device verification remains a release requirement.
+
+## Whole-portal quality release, 12 October 2026
+
+Approved source release corrects mobile overflow in Academy/editor/slides, indexes real applications and existing catalogs in local search, removes all visible variants of the old brand, labels editor/software/data-tool navigation distinctly and expands nine original practical guides. Existing phone data, podcast/advertisement publication state, user storage keys and all portal sections are preserved.
+
+Deployment is gated on creator export/search/storage smoke checks plus a whole-portal browser regression at desktop/390/360px before Pages publication. The latter retains JSON and screenshots as a seven-day GitHub artifact. axe-core 4.10.3 (MPL-2.0) is CI-only. Passing automated checks does not establish real Android hardware, exhaustive accessibility or legal clearance.
