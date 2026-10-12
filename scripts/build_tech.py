@@ -19,13 +19,9 @@ if output.exists():
     shutil.rmtree(output)
 shutil.copytree(source, output)
 
-# Assets outside /tech/ used by the existing portal.
-icon = Path("upstream/assets/app-icon.png")
-if icon.is_file():
-    (output / "assets").mkdir(exist_ok=True)
-    shutil.copy2(icon, output / "assets/app-icon.png")
-else:
-    raise SystemExit("Missing upstream/assets/app-icon.png")
+# TECH has its own original small SVG icon; never read main-platform assets.
+if not (output / "assets/tech-icon.svg").is_file():
+    raise SystemExit("Missing TECH-owned icon")
 
 # Rewrite canonical/social/RSS/sitemap links and root-relative TECH routes
 # in the COPIED output only; keep the live source repository unchanged.
@@ -41,7 +37,7 @@ for path in output.rglob("*"):
         "https://brzoilokalno.com/tech", f"https://{domain}"
     )
     # All /tech/ routes on the source become / routes at the new host.
-    updated = updated.replace("/tech/", "/")
+    updated = re.sub(r'(?<=[\"\'])/tech/', "/", updated)
     # Explicit navigation back to the original main platform must not loop.
     updated = updated.replace(
         '["Glavna platforma ↗","/"]',
@@ -64,10 +60,13 @@ for path in output.rglob("*"):
 )
 
 # Do not expose developer-only code and build docs on Pages.
-for unused in ("README.md", "update-news.py"):
+for unused in ("README.md", "update-news.py", "ORIGINALITY.md", "DEVELOPMENT-REPORT.md"):
     target = output / unused
     if target.is_file():
         target.unlink()
+
+for folder in ("tests", "__pycache__"):
+    shutil.rmtree(output / folder, ignore_errors=True)
 
 # Signal a separate TECH website name to Google on the subdomain root.
 # Reuse the existing CollectionPage markup and connect it to a new WebSite node.
@@ -107,6 +106,7 @@ if verification_tag not in html:
     home.write_text(html, encoding="utf-8")
 # Regression checks: new interactive experiences and expanded catalogs must be deployed.
 required = [
+    "tech-x/core.js", "tech-x/environment.css", "tech-x/resources.html", "tech-x/resources.js", "tech-x/resources-data.js",
     "tech-x/index.html", "tech-x/x.js", "tech-x/x.css",
     "tech-x/studio.html", "tech-x/studio.js", "tech-x/studio.css",
     "tech-x/vizuelni-studio.html", "tech-x/vizuelni-studio.js", "tech-x/vizuelni-studio.css",
@@ -135,3 +135,4 @@ assert (output / "index.html").is_file()
 assert (output / "sitemap.xml").is_file()
 assert f"https://{domain}/" in (output / "index.html").read_text(encoding="utf-8")
 print(f"Built separate TECH website for https://{domain}/")
+

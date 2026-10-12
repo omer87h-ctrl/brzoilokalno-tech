@@ -1,14 +1,14 @@
-name: Deploy TECH subdomain
+name: Deploy approved TECH release
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17 */6 * * *"
+    inputs:
+      source_commit:
+        description: "Optional approved full source SHA; otherwise use release.json"
+        required: false
+        type: string
   push:
     branches: [main]
-    paths:
-      - "scripts/build_tech.py"
-      - ".github/workflows/deploy-tech.yml"
-      - "README.md"
+    paths: ["release.json"]
 permissions:
   contents: read
   pages: write
@@ -22,24 +22,70 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout deployment configuration
         uses: actions/checkout@v4
-      - name: Checkout source website
+      - name: Validate approved source revision
+        id: source
+        env:
+          MANUAL_SOURCE_COMMIT: ${{ inputs.source_commit }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, re
+          release = json.load(open("release.json"))
+          assert release["source_repository"] == "omer87h-ctrl/brzoilokalno-website"
+          commit = os.environ.get("MANUAL_SOURCE_COMMIT") or release["source_commit"]
+          assert re.fullmatch(r"[0-9a-f]{40}", commit), "An approved full SHA is required"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("commit=" + commit + "\n")
+          PYCODE
+      - name: Checkout approved TECH source
         uses: actions/checkout@v4
         with:
           repository: omer87h-ctrl/brzoilokalno-website
-          ref: main
+          ref: ${{ steps.source.outputs.commit }}
           path: upstream
           persist-credentials: false
+          sparse-checkout: tech
       - name: Build independent TECH website
         run: python3 scripts/build_tech.py
+      - name: Set up Node for browser verification
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify real browser previews and exports before publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix /tmp/tez-qa --no-audit --no-fund playwright@1.56.1
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory _site > /tmp/tech-qa-http.log 2>&1 &
+          qa_server_pid=$!
+          trap 'kill "$qa_server_pid" || true' EXIT
+          export TEZ_CHROME="$(command -v google-chrome)"
+          node scripts/smoke_tech.cjs
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Upload output
+      - name: Upload verified TECH output
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Confirm public release and main-platform availability
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in {1..8}; do
+            curl --fail --silent --show-error --max-time 20 "https://tech.brzoilokalno.com/tech-x/resources.html?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-library.html || true
+            if test -f /tmp/tech-live-library.html && grep -Fq 'resources-data.js' /tmp/tech-live-library.html; then break; fi
+            sleep 5
+          done
+          grep -Fq 'Tech Environment Zero to One' /tmp/tech-live-library.html
+          grep -Fq 'resources-data.js' /tmp/tech-live-library.html
+          curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/tech-x/core.js?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-core.js
+          grep -Fq 'projectPanel' /tmp/tech-live-core.js
+          curl --fail --silent --show-error --max-time 25 https://brzoilokalno.com/ -o /tmp/main-platform.html
+          test -s /tmp/main-platform.html
+          echo "Confirmed public TECH release, creator core, and main-platform availability."
