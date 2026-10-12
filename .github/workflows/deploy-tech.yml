@@ -66,6 +66,7 @@ jobs:
           node scripts/test_workspace.cjs
           node scripts/test_visits.cjs
           node scripts/smoke_tech.cjs
+          node scripts/test_content.cjs
           TECH_AUDIT_ORIGIN=http://127.0.0.1:4173 TECH_AUDIT_COMPACT=1 TECH_AUDIT_ENFORCE=1 node scripts/portal-audit.cjs
       - name: Preserve whole portal regression evidence
         if: always()
@@ -117,3 +118,14 @@ jobs:
           curl --fail --silent --show-error --max-time 25 https://brzoilokalno.com/ -o /tmp/main-platform.html
           test -s /tmp/main-platform.html
           echo "Confirmed public TECH release, creator core, and main-platform availability."
+      - name: Verify published content and removal of the old main-domain pages
+        env:
+          TECH_RELEASE: ${{ steps.source.outputs.commit }}
+        run: python3 scripts/test_live_content.py
+      - name: Preserve public content verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tech-public-content-verification
+          path: portal-audit-output/live-content-verification.json
+          retention-days: 7
