@@ -113,9 +113,16 @@ website = {
     "alternateName": ["Brzo i Lokalno Tech", "tech.brzoilokalno.com"],
     "url": f"https://{domain}/",
     "inLanguage": "bs",
-    "publisher": {"@id": "https://brzoilokalno.com/#organization"}
+    "publisher": {"@id": f"https://{domain}/#organization"}
 }
-graph = {"@context": "https://schema.org", "@graph": [website, page]}
+organization = {
+    "@type": "Organization",
+    "@id": f"https://{domain}/#organization",
+    "name": "Brzo i Lokalno TECH",
+    "url": f"https://{domain}/",
+    "logo": {"@type": "ImageObject", "url": f"https://{domain}/assets/app-icon.png"},
+}
+graph = {"@context": "https://schema.org", "@graph": [website, organization, page]}
 new_jsonld = '<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False, separators=(",", ":")) + '</script>'
 html = html[:match.start()] + new_jsonld + html[match.end():]
 home.write_text(html, encoding="utf-8")
