@@ -20,9 +20,9 @@ const assert = require('node:assert/strict');
   },{optout,dnt,gpc,quota});
   await context.route(origin+'/**', async route => {
    const u = new URL(route.request().url());
-   if(u.pathname==='/visits.js') return route.fulfill({contentType:'text/javascript',body:source});
+   if(u.pathname==='/visits.js') return route.fulfill({contentType:'text/javascript; charset=utf-8',body:source});
    if(u.pathname==='/visits.css') return route.fulfill({contentType:'text/css',body:css});
-   return route.fulfill({contentType:'text/html',body:'<!doctype html><html lang="bs"><head><link rel="stylesheet" href="/visits.css"></head><body><main>Portal</main><footer></footer><script src="/visits.js" defer></script></body></html>'});
+   return route.fulfill({contentType:'text/html',body:'<!doctype html><html lang="bs"><head><meta charset="utf-8"><link rel="stylesheet" href="/visits.css"></head><body><main>Portal</main><footer></footer><script src="/visits.js" defer></script></body></html>'});
   });
   await context.route('https://hits.sh/**', async route => {
    requested.push({url:route.request().url(),headers:await route.request().allHeaders()});
@@ -50,6 +50,7 @@ const assert = require('node:assert/strict');
     await page.locator('#tech-visits button').click();await page.waitForLoadState('networkidle');assert.equal(requested.length,2);
    }
   }
+  console.log("PASS counter browser scenario "+JSON.stringify({optout,dnt,gpc,quota,fail}));
   await context.close(); checks++;
  }
  for(const options of [{},{optout:true},{dnt:true},{gpc:true},{quota:true},{fail:true}]) await scenario(options);
