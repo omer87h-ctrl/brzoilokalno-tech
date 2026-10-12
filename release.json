@@ -1,8 +1,8 @@
 {
   "source_repository": "omer87h-ctrl/brzoilokalno-website",
-  "source_commit": "3c0d8a212ba45df3692c805883fd33f873b61a9c",
+  "source_commit": "83a50b64da3eac760bcc5fac48a11b954ec784f9",
   "release_name": "Tech Environment Zero to One",
   "approved_at": "2026-10-12",
-  "approval": "Owner explicitly requested publication in this session",
-  "revision": "whole-portal-with-versioned-assets"
+  "approval": "Owner authorized TECH implementation and publication and requested visitor counting",
+  "revision": "privacy-aware-aggregate-page-opening-counter"
 }

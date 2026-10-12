@@ -158,6 +158,18 @@ for legacy in (output / "tech-x").glob("*.html"):
         '<script>' + redirect + '</script></body></html>', encoding="utf-8"
     )
 
+# Shared aggregate counter on public TECH pages only, never compatibility redirects.
+for counter_asset in ("visits.js", "visits.css"):
+    assert (output / counter_asset).is_file(), f"Missing counter asset: {counter_asset}"
+for page_path in output.rglob("*.html"):
+    if "tech-x" in page_path.relative_to(output).parts:
+        continue
+    markup = page_path.read_text(encoding="utf-8")
+    assert "</head>" in markup and "</body>" in markup, page_path
+    markup = markup.replace("</head>", '<link rel="stylesheet" href="/visits.css"></head>', 1)
+    markup = markup.replace("</body>", '<script src="/visits.js" defer></script></body>', 1)
+    page_path.write_text(markup, encoding="utf-8")
+
 # Content-version local scripts/styles so updated HTML cannot reuse older cached code.
 import hashlib
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
