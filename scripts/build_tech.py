@@ -167,6 +167,14 @@ assert 'ČITAJ TECH ZONU' in home_markup, "Editorial button missing from home"
 assert 'ARHIVA VIJESTI' in home_markup, "Archive route missing from home"
 assert '<loc>https://tech.brzoilokalno.com/environment-zero-to-one/</loc>' in (output / "sitemap.xml").read_text(encoding="utf-8"), "Environment missing from sitemap"
 
+# The TECH homepage, favicon, and sitemap must stay entirely on the TECH host.
+assert (output / "assets/app-icon.png").read_bytes() == brand_icon, "TECH favicon differs from owner's original"
+built_home = (output / "index.html").read_text(encoding="utf-8")
+assert 'href="/assets/app-icon.png"' in built_home, "TECH homepage is missing its local original favicon"
+built_sitemap = (output / "sitemap.xml").read_text(encoding="utf-8")
+assert "https://brzoilokalno.com/tech/" not in built_sitemap, "Old main-domain TECH URLs still present in TECH sitemap"
+assert 'https://tech.brzoilokalno.com/' in built_sitemap, "TECH sitemap missing independent host"
+
 assert (output / "index.html").is_file()
 assert (output / "sitemap.xml").is_file()
 assert f"https://{domain}/" in (output / "index.html").read_text(encoding="utf-8")
