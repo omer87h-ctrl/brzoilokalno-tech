@@ -20,3 +20,5 @@ Do not alter the main platform for this release. Browser/device verification rem
 Approved source release corrects mobile overflow in Academy/editor/slides, indexes real applications and existing catalogs in local search, removes all visible variants of the old brand, labels editor/software/data-tool navigation distinctly and expands nine original practical guides. Existing phone data, podcast/advertisement publication state, user storage keys and all portal sections are preserved.
 
 Deployment is gated on creator export/search/storage smoke checks plus a whole-portal browser regression at desktop/390/360px before Pages publication. The latter retains JSON and screenshots as a seven-day GitHub artifact. axe-core 4.10.3 (MPL-2.0) is CI-only. Passing automated checks does not establish real Android hardware, exhaustive accessibility or legal clearance.
+
+Local script and stylesheet URLs are versioned by their content hash during the build, preventing updated HTML from reusing a previous release’s cached editor/navigation assets.

@@ -158,6 +158,24 @@ for legacy in (output / "tech-x").glob("*.html"):
         '<script>' + redirect + '</script></body></html>', encoding="utf-8"
     )
 
+# Content-version local scripts/styles so updated HTML cannot reuse older cached code.
+import hashlib
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+asset_ref = re.compile(r"(<(?:script|link)\b[^>]*?\b(?:src|href)=[\"'])([^\"']+)([\"'])", re.I)
+for page_path in output.rglob("*.html"):
+    def version_asset(match):
+        reference = urlsplit(match.group(2))
+        if reference.scheme or reference.netloc or not reference.path.endswith((".js", ".css")):
+            return match.group(0)
+        asset = (output / reference.path.lstrip("/")) if reference.path.startswith("/") else (page_path.parent / reference.path)
+        if not asset.is_file() or not asset.resolve().is_relative_to(output.resolve()):
+            return match.group(0)
+        params = [(key, value) for key, value in parse_qsl(reference.query, keep_blank_values=True) if key != "v"]
+        params.append(("v", hashlib.sha256(asset.read_bytes()).hexdigest()[:12]))
+        address = urlunsplit((reference.scheme, reference.netloc, reference.path, urlencode(params), reference.fragment))
+        return match.group(1) + address + match.group(3)
+    page_path.write_text(asset_ref.sub(version_asset, page_path.read_text(encoding="utf-8")), encoding="utf-8")
+
 # Catch split HTML branding as well as single text labels before shipping.
 from html.parser import HTMLParser
 class VisibleText(HTMLParser):
