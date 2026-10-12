@@ -30,7 +30,7 @@ shutil.copytree(output / "tech-x", output / public_app)
 # from the primary site at runtime; this keeps the two sites independent.
 brand_icon_source = Path("assets/original-brzoilokalno-icon.png.base64")
 brand_icon = base64.b64decode(brand_icon_source.read_text(encoding="ascii").strip(), validate=True)
-if not brand_icon.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+if not brand_icon.startswith(b"\x89PNG\r\n\x1a\n"):
     raise SystemExit("The standalone TECH brand icon is not a PNG")
 (output / "assets").mkdir(parents=True, exist_ok=True)
 (output / "assets/app-icon.png").write_bytes(brand_icon)
@@ -67,12 +67,12 @@ for path in output.rglob("*"):
     )
     # All TECH documents declare the TECH-HOSTED original Brzo i Lokalno icon.
     # This is a local file on tech.brzoilokalno.com, NOT an image loaded from the main site.
-    if path.suffix.lower() == ".html" and re.search(r"<head\\b", updated, re.I):
+    if path.suffix.lower() == ".html" and re.search(r"<head\b", updated, re.I):
         icon_link = '<link rel="icon" type="image/png" sizes="512x512" href="/assets/app-icon.png">'
-        icon_pattern = r'<link\\b(?=[^>]*\\brel=["\\'](?:shortcut\\s+)?icon["\\'])[^>]*>'
+        icon_pattern = r'<link\b(?=[^>]*\brel=["\'](?:shortcut\s+)?icon["\'])[^>]*>'
         updated, icon_count = re.subn(icon_pattern, icon_link, updated, flags=re.I)
         if not icon_count:
-            updated = re.sub(r"<head\\b[^>]*>", lambda m: m.group(0) + icon_link, updated, count=1, flags=re.I)
+            updated = re.sub(r"<head\b[^>]*>", lambda m: m.group(0) + icon_link, updated, count=1, flags=re.I)
     if updated != original:
         path.write_text(updated, encoding="utf-8")
 
