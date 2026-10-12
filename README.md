@@ -3,7 +3,7 @@
 Source: `omer87h-ctrl/brzoilokalno-website/tech/`. Destination: `tech.brzoilokalno.com`.
 Only the TECH source tree is copied. The primary site, Android and PWA are not read or modified.
 
-The creator suite is named **Tech Environment Zero to One**. Existing `tech-x/` paths remain compatible.
+The creator suite is named **Tech Environment Zero to One**. Public pages use `/environment-zero-to-one/`; existing `tech-x/` HTML addresses redirect with query/hash preserved. Internal legacy source names and storage keys remain compatible.
 
 Publishing requires owner approval. There is no scheduled deployment or floating-main source checkout. Only an explicitly edited `release.json` on main triggers publication.
 After owner approval, record the approved full source SHA in `release.json` or manually dispatch `.github/workflows/deploy-tech.yml`.

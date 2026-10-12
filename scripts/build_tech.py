@@ -19,6 +19,11 @@ if output.exists():
     shutil.rmtree(output)
 shutil.copytree(source, output)
 
+# Public identity uses the owner's new name. Keep old static assets available
+# for cached pages; old HTML addresses become compatibility redirects below.
+public_app = "environment-zero-to-one"
+shutil.copytree(output / "tech-x", output / public_app)
+
 # TECH has its own original small SVG icon; never read main-platform assets.
 if not (output / "assets/tech-icon.svg").is_file():
     raise SystemExit("Missing TECH-owned icon")
@@ -38,6 +43,7 @@ for path in output.rglob("*"):
     )
     # All /tech/ routes on the source become / routes at the new host.
     updated = re.sub(r'(?<=[\"\'])/tech/', "/", updated)
+    updated = updated.replace("tech-x/", public_app + "/")
     # Explicit navigation back to the original main platform must not loop.
     updated = updated.replace(
         '["Glavna platforma ↗","/"]',
@@ -122,17 +128,55 @@ required = [
     "resursi/radni-list-tech-dozvole.txt",
     "resursi/predlozak-izvor-i-obecanje.txt",
 ]
+required = [p.replace("tech-x/", public_app + "/") for p in required]
 for relative in required:
     if not (output / relative).is_file():
         raise SystemExit(f"TECH deployment missing required resource: {relative}")
 home_markup = (output / "index.html").read_text(encoding="utf-8")
-assert 'href="./tech-x/"' in home_markup, "TECH X link missing from portal home"
+assert 'href="./environment-zero-to-one/"' in home_markup, "Environment link missing from portal home"
 assert 'ČITAJ TECH ZONU' in home_markup, "Editorial button missing from home"
 assert 'ARHIVA VIJESTI' in home_markup, "Archive route missing from home"
-assert '<loc>https://tech.brzoilokalno.com/tech-x/</loc>' in (output / "sitemap.xml").read_text(encoding="utf-8"), "TECH X missing from sitemap"
+assert '<loc>https://tech.brzoilokalno.com/environment-zero-to-one/</loc>' in (output / "sitemap.xml").read_text(encoding="utf-8"), "Environment missing from sitemap"
 
 assert (output / "index.html").is_file()
 assert (output / "sitemap.xml").is_file()
 assert f"https://{domain}/" in (output / "index.html").read_text(encoding="utf-8")
+# Preserve all old bookmarked application addresses and their query/hash.
+for legacy in (output / "tech-x").glob("*.html"):
+    suffix = "" if legacy.name == "index.html" else legacy.name
+    destination = "/" + public_app + "/" + suffix
+    absolute = "https://" + domain + destination
+    redirect = "location.replace(" + json.dumps(destination) + "+location.search+location.hash);"
+    legacy.write_text(
+        '<!doctype html><html lang="bs"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<meta http-equiv="refresh" content="0;url=' + destination + '">'
+        '<link rel="canonical" href="' + absolute + '">'
+        '<title>Tech Environment Zero to One</title></head><body>'
+        '<p><a href="' + destination + '">Otvori Tech Environment Zero to One</a></p>'
+        '<script>' + redirect + '</script></body></html>', encoding="utf-8"
+    )
+
+# Catch split HTML branding as well as single text labels before shipping.
+from html.parser import HTMLParser
+class VisibleText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.parts = []
+        self.skip = 0
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style"):
+            self.skip += 1
+    def handle_endtag(self, tag):
+        if tag in ("script", "style"):
+            self.skip -= 1
+    def handle_data(self, text):
+        if not self.skip:
+            self.parts.append(text)
+for page_path in output.rglob("*.html"):
+    parser = VisibleText()
+    parser.feed(page_path.read_text(encoding="utf-8"))
+    assert not re.search(r"\bTECH\s*X\b", " ".join(parser.parts), re.I), page_path
+
 print(f"Built separate TECH website for https://{domain}/")
 
