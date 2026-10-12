@@ -22,13 +22,14 @@ with ThreadPoolExecutor(max_workers=6) as pool:verified=list(pool.map(verify_fil
 old=['/tech/'+str(p.relative_to(site)) for p in site.rglob('*.html') if not str(p.relative_to(site)).startswith(('environment-zero-to-one/','tech-x/moji-radovi','tech-x/projekti','tech-x/resources'))]
 # Old public suite pages used tech-x, not the new public environment route.
 # Match the original 39-page legacy set without newly introduced pages.
-old=[p for p in old if not p.endswith(('moji-radovi.html','projekti.html','resources.html'))]
+old=[p for p in old if not p.endswith(('moji-radovi.html','projekti.html','resources.html'))]+['/tech/','/tech/sitemap.xml']
 def verify_removed(path):
     code,_=request('https://brzoilokalno.com'+path+'?release='+release)
-    assert code in (404,410),(path,code)
-    return {'path':path,'status':code}
+    return {'path':path,'status':code,'removed':code in (404,410)}
 with ThreadPoolExecutor(max_workers=6) as pool:removed=list(pool.map(verify_removed,old))
 code,main=request('https://brzoilokalno.com/?release='+release);assert code==200 and main
 report={'tech_files':verified,'old_main_domain_pages':removed,'main_home_status':code,'google_indexing':'Not inspected; recrawling is separate from publication.'}
 Path('portal-audit-output').mkdir(exist_ok=True);Path('portal-audit-output/live-content-verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
-print('LIVE_CONTENT_CHECKS',len(verified),'exact public file matches;',len(removed),'old pages return 404/410; primary home HTTP 200')
+failed=[x for x in removed if not x['removed']]
+print('LIVE_CONTENT_CHECKS',len(verified),'exact public file matches;',sum(x['removed'] for x in removed),'of',len(removed),'old URLs return 404/410; primary home HTTP 200')
+assert not failed, 'Old TECH URLs still respond as available: '+json.dumps(failed)
