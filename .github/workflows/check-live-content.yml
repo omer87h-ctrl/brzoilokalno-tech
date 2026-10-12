@@ -1,0 +1,33 @@
+name: Verify separate TECH public content
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/check-live-content.yml', 'scripts/probe_domains.py', 'scripts/test_live_content.py']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: omer87h-ctrl/brzoilokalno-website
+          ref: c1ca01e357b6ed6266d2e36eff163837f17b34a0
+          path: upstream
+          sparse-checkout: tech
+          persist-credentials: false
+      - run: python3 scripts/build_tech.py
+      - name: Inspect actual old main-domain responses without following redirects
+        run: python3 scripts/probe_domains.py
+      - name: Compare published TECH content with the approved build
+        env:
+          TECH_RELEASE: c1ca01e357b6ed6266d2e36eff163837f17b34a0
+        run: python3 scripts/test_live_content.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tech-domain-evidence
+          path: portal-audit-output/
+          retention-days: 7
