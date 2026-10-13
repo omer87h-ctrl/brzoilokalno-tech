@@ -247,3 +247,11 @@ for page_path in output.rglob("*.html"):
 
 print(f"Built separate TECH website for https://{domain}/")
 
+
+# Owner-requested standalone demo: copy after portal rewriting/counter injection.
+# Existing portal pages and sitemap are unchanged; demo carries noindex metadata.
+demo_source = Path("clea7-demo")
+if (demo_source / "index.html").is_file():
+    shutil.copytree(demo_source, output / "clea7-demo", dirs_exist_ok=True)
+    assert "BL CLEA7" in (output / "clea7-demo/index.html").read_text(encoding="utf-8")
+    assert "visits.js" not in (output / "clea7-demo/index.html").read_text(encoding="utf-8")

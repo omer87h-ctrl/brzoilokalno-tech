@@ -8,7 +8,7 @@ on:
         type: string
   push:
     branches: [main]
-    paths: ["release.json"]
+    paths: ["release.json", "clea7-demo/**", "scripts/build_tech.py", "scripts/test_clea7_demo.cjs"]
 permissions:
   contents: read
   pages: write
@@ -68,6 +68,26 @@ jobs:
           node scripts/smoke_tech.cjs
           node scripts/test_content.cjs
           TECH_AUDIT_ORIGIN=http://127.0.0.1:4173 TECH_AUDIT_COMPACT=1 TECH_AUDIT_ENFORCE=1 node scripts/portal-audit.cjs
+      - name: Verify standalone CLEA7 demo in real Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/clea7-demo-qa
+          cp -R _site/clea7-demo /tmp/clea7-demo-qa/web
+          cp scripts/test_clea7_demo.cjs /tmp/clea7-demo-qa/test.cjs
+          npm install --prefix /tmp/clea7-qa --no-audit --no-fund playwright@1.56.1 axe-core@4.10.3
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory /tmp/clea7-demo-qa/web > /tmp/clea7-demo-http.log 2>&1 &
+          demo_pid=$!
+          trap 'kill "$demo_pid" || true' EXIT
+          cd /tmp/clea7-demo-qa
+          CLEA7_CHROME="$(command -v google-chrome)" node test.cjs
+      - name: Preserve CLEA7 demo evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clea7-demo-browser-evidence
+          path: /tmp/clea7-demo-qa/test-evidence/
+          retention-days: 14
       - name: Preserve whole portal regression evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -114,6 +134,8 @@ jobs:
           grep -Fq 'works-backup' /tmp/tech-live-workspace.html
           curl --fail --silent --show-error --max-time 25 "https://tech.brzoilokalno.com/environment-zero-to-one/vizuelni-studio.html?release=${{ steps.source.outputs.commit }}" -o /tmp/tech-live-builder.html
           grep -Fq 'visual-onboarding-form' /tmp/tech-live-builder.html
+          curl --fail --silent --show-error --max-time 25 https://tech.brzoilokalno.com/clea7-demo/ -o /tmp/clea7-demo-live.html
+          grep -Fq 'BL CLEA7' /tmp/clea7-demo-live.html
           echo "Confirmed connected workspace, guided builder, counter integration and portal navigation."
           curl --fail --silent --show-error --max-time 25 https://brzoilokalno.com/ -o /tmp/main-platform.html
           test -s /tmp/main-platform.html
