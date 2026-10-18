@@ -1,8 +1,8 @@
 {
   "source_repository": "omer87h-ctrl/brzoilokalno-website",
-  "source_commit": "175d918f312221f955727ea0a3456e45181e5e62",
+  "source_commit": "c8dc42ebaeb02f476f5db2c8756f82d018e9ab48",
   "release_name": "Tech Environment Zero to One",
   "approved_at": "2026-10-18",
-  "approval": "Owner-requested fix to new article's TECH portal return links only; preserve all other approved portal functionality.",
-  "revision": "tech-blclea7-article-return-links-fixed"
+  "approval": "Correct the BLclea7 article social sharing image to display the existing TECH visual identity; preserve other portal work.",
+  "revision": "tech-blclea7-linkedin-tech-brand-image"
 }
