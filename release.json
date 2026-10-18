@@ -1,8 +1,8 @@
 {
   "source_repository": "omer87h-ctrl/brzoilokalno-website",
-  "source_commit": "c1ca01e357b6ed6266d2e36eff163837f17b34a0",
+  "source_commit": "27337a38f68c1e32c360dc41b5b4aed0f3cc32d5",
   "release_name": "Tech Environment Zero to One",
-  "approved_at": "2026-10-12",
-  "approval": "Owner authorized completing and publishing library, BiH Radar and Podcast/collaboration improvements; primary platform remains unchanged.",
-  "revision": "original-library-bih-radar-calendar-podcast-and-collaboration"
+  "approved_at": "2026-10-18",
+  "approval": "Owner approved adding the BLclea7 author article and one catalogue entry only; all previously approved TECH content, portal UI, and main app remain unchanged.",
+  "revision": "tech-zone-blclea7-article-catalogue-only"
 }
