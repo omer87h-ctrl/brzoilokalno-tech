@@ -1,0 +1,48 @@
+name: Verify Grad majstora game
+on:
+  push:
+    branches: [work/grad-majstora]
+  pull_request:
+    paths: ['igra/**', 'scripts/*grad*', 'scripts/build_tech.py', '.github/workflows/verify-grad.yml', '.github/workflows/deploy-tech.yml']
+permissions:
+  contents: read
+jobs:
+  game:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read the pinned existing TECH source
+        id: source
+        run: python -c 'import json,os; r=json.load(open("release.json")); open(os.environ["GITHUB_OUTPUT"],"a").write("commit="+r["source_commit"]+"\n")'
+      - uses: actions/checkout@v4
+        with:
+          repository: omer87h-ctrl/brzoilokalno-website
+          ref: ${{ steps.source.outputs.commit }}
+          path: upstream
+          persist-credentials: false
+          sparse-checkout: tech
+      - name: Build original game and preserve TECH
+        run: |
+          python scripts/make_grad_art.py
+          python scripts/build_tech.py
+          node scripts/test_grad_core.cjs
+      - name: Real Chrome gameplay, mobile, storage, downloads and sharing
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix /tmp/tez-qa --no-audit --no-fund playwright@1.56.1 axe-core@4.10.3
+          python -m http.server 4173 --bind 127.0.0.1 --directory _site >/tmp/grad-http.log 2>&1 &
+          game_server_pid=$!
+          trap 'kill "$game_server_pid" || true' EXIT
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_browser.cjs
+      - name: Preserve real game evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grad-majstora-browser
+          path: grad-evidence/
+          retention-days: 7

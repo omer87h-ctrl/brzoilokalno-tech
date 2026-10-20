@@ -22,3 +22,13 @@ Approved source release corrects mobile overflow in Academy/editor/slides, index
 Deployment is gated on creator export/search/storage smoke checks plus a whole-portal browser regression at desktop/390/360px before Pages publication. The latter retains JSON and screenshots as a seven-day GitHub artifact. axe-core 4.10.3 (MPL-2.0) is CI-only. Passing automated checks does not establish real Android hardware, exhaustive accessibility or legal clearance.
 
 Local script and stylesheet URLs are versioned by their content hash during the build, preventing updated HTML from reusing a previous release’s cached editor/navigation assets.
+
+## Grad majstora — original standalone game, October 2026
+
+`igra/` is copied into `/igra/` only in the standalone TECH deployment. The
+pinned upstream revision and primary platform remain unchanged. One homepage
+card and one sitemap entry connect the complete game. No portal visitor counter
+is injected into the game. Branch/PR Chrome verification and all existing
+prepublication portal checks gate the release. See `igra/README.md` for rules,
+privacy boundaries and test commands. Original LinkedIn PNG is generated from
+the first-party social card during verified build, not fetched from a stock service.
