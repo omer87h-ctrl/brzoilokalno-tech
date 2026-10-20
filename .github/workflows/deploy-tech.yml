@@ -8,7 +8,7 @@ on:
         type: string
   push:
     branches: [main]
-    paths: ["release.json", "clea7-demo/**", "scripts/build_tech.py", "scripts/test_clea7_demo.cjs"]
+    paths: ["release.json", "clea7-demo/**", "scripts/build_tech.py", "scripts/test_clea7_demo.cjs", "igra/**", "scripts/*grad*", ".github/workflows/deploy-tech.yml"]
 permissions:
   contents: read
   pages: write
@@ -63,6 +63,8 @@ jobs:
           qa_server_pid=$!
           trap 'kill "$qa_server_pid" || true' EXIT
           export TEZ_CHROME="$(command -v google-chrome)"
+          node scripts/test_grad_core.cjs
+          node scripts/test_grad_browser.cjs
           node scripts/test_workspace.cjs
           node scripts/test_visits.cjs
           node scripts/smoke_tech.cjs
@@ -94,6 +96,13 @@ jobs:
         with:
           name: tech-whole-portal-regression
           path: portal-audit-output/
+          retention-days: 7
+      - name: Preserve Grad majstora evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grad-majstora-release-evidence
+          path: grad-evidence/
           retention-days: 7
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -151,3 +160,5 @@ jobs:
           name: tech-public-content-verification
           path: portal-audit-output/live-content-verification.json
           retention-days: 7
+      - name: Verify published game bytes and LinkedIn image
+        run: python3 scripts/check_grad_live.py

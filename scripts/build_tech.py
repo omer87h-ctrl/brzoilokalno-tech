@@ -255,3 +255,24 @@ if (demo_source / "index.html").is_file():
     shutil.copytree(demo_source, output / "clea7-demo", dirs_exist_ok=True)
     assert "BL CLEA7" in (output / "clea7-demo/index.html").read_text(encoding="utf-8")
     assert "visits.js" not in (output / "clea7-demo/index.html").read_text(encoding="utf-8")
+
+# Owner-approved standalone game. Copy after portal rewriting/counter injection:
+# game storage/network boundaries do not inherit the portal visitor counter.
+game_source = Path("igra")
+if (game_source / "index.html").is_file():
+    shutil.copytree(game_source, output / "igra", dirs_exist_ok=True)
+    (output / "igra/README.md").unlink(missing_ok=True)
+    (output / "igra/ACCEPTANCE.md").unlink(missing_ok=True)
+    home_path = output / "index.html"
+    markup = home_path.read_text(encoding="utf-8")
+    promo = '<section class="grad-game-card" aria-labelledby="grad-game-heading"><div><small>BRZO I LOKALNO · THE GAME</small><h2 id="grad-game-heading">Grad majstora</h2><p>Okupi ekipu, poveži sedam naselja i izgradi grad kojem komšiluk vjeruje. Originalna besplatna strategija: 35 ugovora, bez računa i instalacije.</p></div><a href="/igra/">Zaigraj Grad majstora ↗</a></section>'
+    assert "</main>" in markup, "TECH homepage missing main"
+    markup = markup.replace("</head>", '<link rel="stylesheet" href="/igra/portal-card.css"></head>', 1)
+    markup = markup.replace("</main>", promo + "</main>", 1)
+    home_path.write_text(markup, encoding="utf-8")
+    sitemap = output / "sitemap.xml"
+    xml = sitemap.read_text(encoding="utf-8")
+    xml = xml.replace("</urlset>", '<url><loc>https://tech.brzoilokalno.com/igra/</loc></url></urlset>')
+    sitemap.write_text(xml, encoding="utf-8")
+    assert "visits.js" not in (output / "igra/index.html").read_text(encoding="utf-8")
+    print("Built standalone Grad majstora and its TECH homepage link")
