@@ -30,6 +30,10 @@ These results did not prove the absence of untested logic and UX defects.
 - Medium: ambient traffic and work routes were painted above all buildings.
   Depth-sort moving actors with the world instead of drawing through facades.
 
+- Medium: the new exact-resource browser test exposed floating-point ceil errors
+  in upgrade prices (home level 3 charged 265 instead of the intended 264).
+  Use integer/rational arithmetic and cover all 11 types, three levels and discounts.
+
 ## Verification and boundaries
 
 New regression tests must reproduce the above triggers, not only inspect syntax.
