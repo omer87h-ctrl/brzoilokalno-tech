@@ -24,10 +24,11 @@ transport fuel and tool servicing change validated game state.
 Kvalitet drives reputation, actual complaints and lasting client-site upgrades.
 Business promotion requires completed jobs and acquired assets, not housing
 population. Mini games are optional: a no-wager once-per-day break wheel,
-original tool-card allocation game and a solvable, seeded route puzzle. The field
+original tool-card allocation game a solvable, seeded route puzzle, and a hands-on carpentry bench. The field
 puzzle advances an actual working job by one shift, including tool wear. It
 respects electrical-outage safety and never teleports a travelling worker.
-No cash bets, real money, paid spins, cashouts, accounts, microphone, GPS,
+The carpentry bench has measured points, fastening, bounded mistakes/material waste,
+and a shared actual work-step/tool-wear finalizer. No cash bets, real money, paid spins, cashouts, accounts, microphone, GPS,
 backend, trackers or external APIs are introduced.
 
 ## Contracts and checks
