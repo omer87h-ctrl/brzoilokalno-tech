@@ -56,3 +56,46 @@ The desktop/mobile browser emulation is not physical Android/iPhone testing.
 No native APK/Windows packaging, multiplayer or server-backed rankings are claimed.
 The existing TECH release source remains pinned; build integration copies this
 folder after portal rewriting and counter injection, preserving its privacy boundary.
+
+## Living city update 2.0, October 2026
+
+The existing campaign, economy, specializations and all earlier controls remain.
+Six individually scheduled fictional craftspeople, local NPC properties and a
+job lifecycle now share the same validated state and deterministic next-day engine.
+Requests have real skill, material, wage, budget, availability, route and deadline
+constraints. Dialogue facts, in-game calls, proposals, reservation, travel, work,
+inspection, one warranty revisit and final payment are executable state changes.
+Calls are scripted interactions with fictional characters: no telephone, microphone,
+real chat service, external AI or outbound user-content transmission exists.
+
+Original city art: a game adaptation of the owner's original icon and an eleven-
+building atlas were generated for this project with OpenAI's image tool. Sources
+are retained locally at creation; optimized WebP derivatives are stored as base64
+in deployment assets and decoded only into the game output. These are newly
+created illustrations, not stock photographs or assets copied from another game.
+No global novelty, trademark clearance or absolute copyright guarantee is asserted.
+The owner's source icon and existing legal notices remain unchanged. FFmpeg was
+used as a development-only image encoding utility, not distributed with the game.
+
+Canvas sprites follow actual object types and upgrade levels. Fictional residents
+have their own non-player properties. Named worker routes/status markers follow
+booked jobs. Other cars/pedestrians are clearly ambient traffic: they do not create
+fake jobs, money or reviews. Ambient rendering is capped at eight actors and about
+24 animation callbacks per second; it pauses when the map is hidden or outside the
+viewport and respects reduced motion. There is a user control to stop ambience.
+This is not a battery benchmark or physical-device performance certification.
+
+Save format `brzo.grad-majstora/2` retains the original town fields and adds a closed
+versioned dispatch record. Version-1 checksums are verified before migration. New
+storage keys are separate from version 1 so an older tab cannot overwrite new data.
+A migration marker prevents resurrecting legacy data after reset. JSON backup
+imports remain available for both formats; resetting deletes game saves only.
+Per-character conversations and job history have explicit size limits. The checksum
+is accidental-corruption detection, not anti-cheat or signature authentication.
+
+Additional verification: `node scripts/test_grad_dispatch.cjs` and
+`node scripts/test_grad_living_browser.cjs`. The latter uses real Chrome controls
+for migration, calls, declined/accepted offers, a busy craftsman, actual reservation,
+travel/work/payment, literal chat text, profiles, traffic pause/reduced motion,
+mobile accessibility and offline restart. Source snapshots and CI logs distinguish
+executed automated tests from device testing that has not been performed.

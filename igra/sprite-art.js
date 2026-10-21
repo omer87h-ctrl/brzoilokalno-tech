@@ -1,0 +1,10 @@
+/* First-party atlas renderer. Cropping an original generated atlas is game asset
+   preparation, not external asset retrieval or execution of user image data. */
+(function(){'use strict';
+class Artwork{
+ constructor(changed){this.ready=false;this.image=new Image();this.crops=[];this.image.onload=()=>{this.findCrops();this.ready=true;changed();};this.image.src='art/buildings.webp';}
+ findCrops(){const image=this.image,canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;const c=canvas.getContext('2d',{willReadFrequently:true});c.drawImage(image,0,0);const pixels=c.getImageData(0,0,canvas.width,canvas.height).data,w=canvas.width,h=canvas.height;for(let index=0;index<11;index++){const left=Math.floor(index%3*w/3),right=Math.floor((index%3+1)*w/3),top=Math.floor(Math.floor(index/3)*h/4),bottom=Math.floor((Math.floor(index/3)+1)*h/4);let x0=right,y0=bottom,x1=left,y1=top;for(let y=top;y<bottom;y++)for(let x=left;x<right;x++)if(pixels[(y*w+x)*4+3]>30){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);}this.crops.push(x1>x0&&y1>y0?{x:x0,y:y0,w:x1-x0+1,h:y1-y0+1}:{x:left,y:top,w:right-left,h:bottom-top});}}
+ draw(c,type,x,y,level=1,options={}){if(!this.ready)return false;const types=['home','workshop','bakery','cafe','garden','solar','depot','clinic','library','market','culture'],index=types.indexOf(type),crop=this.crops[index];if(!crop)return false;let width=(options.npc?70:76)+(level-1)*5;const height=width*crop.h/crop.w;c.save();const t=options.appear??1;if(t<1){c.globalAlpha*=Math.max(.2,t);c.translate(x,y+12);c.scale(.8+.2*t,.8+.2*t);c.translate(-x,-y-12);}c.drawImage(this.image,crop.x,crop.y,crop.w,crop.h,x-width/2,y-height+15,width,height);if(level>1&&!options.npc){c.fillStyle='#152c37e8';c.strokeStyle='#e9b566';c.lineWidth=1;c.beginPath();c.roundRect(x+15,y-20,23,15,5);c.fill();c.stroke();c.fillStyle='#ffe1a3';c.font='bold 9px system-ui';c.textAlign='center';c.fillText('★'+level,x+26.5,y-9);}c.restore();return true;}
+}
+window.GradArtwork=Artwork;
+})();
