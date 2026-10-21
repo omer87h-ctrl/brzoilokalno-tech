@@ -31,6 +31,7 @@ jobs:
           python scripts/build_tech.py
           node scripts/test_grad_core.cjs
           node scripts/test_grad_dispatch.cjs
+          node scripts/test_grad_quality.cjs
       - name: Real Chrome gameplay, mobile, storage, downloads and sharing
         shell: bash
         run: |
@@ -41,6 +42,7 @@ jobs:
           trap 'kill "$game_server_pid" || true' EXIT
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_living_browser.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_quality_browser.cjs
       - name: Preserve real game evidence
         if: always()
         uses: actions/upload-artifact@v4
