@@ -43,3 +43,13 @@ distinct sprite renders, actual construction/upgrade controls, clean new cities,
 filtered conversation details, full equipment costs and offline tiers. Public
 verification compares 17 exact game files, including the two new original atlases.
 Physical Android hardware remains a separate verification requirement.
+
+## Career acceptance, version 4
+
+Primary entry identifies the player (Adnan) and the real first caller (Haris).
+Additional pure/browser suites verify career economics, owned tools and wear,
+contractor/employee differences, inventory sources, actual delivered orders,
+company progression, three optional mini games, field work integration, caller
+roles, old-format preservation and mobile/offline behavior. Older settlement
+campaign tests run that explicit mode. Public validation compares 20 game files.
+Use the actual run logs and artifacts; this record alone is not a test result.
