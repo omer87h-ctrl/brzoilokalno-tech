@@ -29,3 +29,22 @@ Publication uses the existing public TECH pull-request verification/deploy route
 Keep original author notices and artwork provenance. General mechanics such as
 cards or resource allocation are implemented independently; no claim of global
 novelty, universal legal clearance or AAA production scale is made.
+
+## Hands-on work and visible career progression
+
+The carpentry bench is available only for a booked wood job in the working state.
+The player marks two measurements and fastens four points. Correct completion
+uses the reserved real tool and the common work finalizer; two wrong hits cost
+one material and six close the attempt. Each daily attempt is persisted. Closing
+a job also closes an unfinished bench; normal day progression remains available.
+
+The crew roster, progress screen, share text and daily report adapt to career
+mode. Company milestones use the owned workshop, not a settlement-building
+requirement. The original settlement specializations and construction rules remain
+available in the explicit campaign mode. Income, expenses, debt, employees and
+markets are read from actual state. There are no fabricated online players.
+
+Pure-rule verification now includes a complete legal solo-to-regional-firm
+progression: 34 completed jobs, two employees and three markets on game day 56,
+without rescue money or any settlement buildings. It measures rule reachability,
+not the enjoyment, duration or difficulty of human play.

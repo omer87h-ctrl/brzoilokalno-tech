@@ -49,7 +49,8 @@ Physical Android hardware remains a separate verification requirement.
 Primary entry identifies the player (Adnan) and the real first caller (Haris).
 Additional pure/browser suites verify career economics, owned tools and wear,
 contractor/employee differences, inventory sources, actual delivered orders,
-company progression, three optional mini games, field work integration, caller
+company progression, a hands-on carpentry bench, three optional break/practice games,
+field work integration, caller
 roles, old-format preservation and mobile/offline behavior. Older settlement
 campaign tests run that explicit mode. Public validation compares 20 game files.
 Use the actual run logs and artifacts; this record alone is not a test result.
