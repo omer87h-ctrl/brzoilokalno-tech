@@ -2,15 +2,15 @@
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.request import Request, urlopen
-import hashlib,json,time
+import hashlib,json,time,os
 
 base=Path('_site/igra')
-files=['index.html','core.js','city.js','game.js','game.css','skyline.svg','sw.js','icon.svg','share.png']
+files=['index.html','core.js','city.js','game.js','game.css','skyline.svg','sw.js','icon.svg','share.png','dispatch.js','dispatch-ui.js','sprite-art.js','community.css','art/game-icon.webp','art/buildings.webp']
 def check(name):
     expected=(base/name).read_bytes()
     for attempt in range(6):
         try:
-            request=Request('https://tech.brzoilokalno.com/igra/'+name+'?check=grad-v1',headers={'DNT':'1','User-Agent':'GradMajstoraReleaseCheck'})
+            request=Request('https://tech.brzoilokalno.com/igra/'+name+'?check='+os.environ.get('GITHUB_SHA','grad-v2'),headers={'DNT':'1','User-Agent':'GradMajstoraReleaseCheck'})
             with urlopen(request,timeout=20) as r:
                 actual=r.read();status=r.status
             if status==200 and hashlib.sha256(actual).digest()==hashlib.sha256(expected).digest():

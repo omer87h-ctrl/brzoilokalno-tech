@@ -23,3 +23,13 @@ GitHub Actions run logs and `grad-evidence/` artifacts, once executed.
 Physical-device battery/memory/performance, all browsers and native packages are
 not established by Chrome viewport tests. No such claims appear in the game.
 The game is original standalone web code, not a completed CLEA7 game-renderer adapter.
+
+## Living city acceptance, version 2
+
+New executable suites cover individual craftsperson scheduling, safe diagnosis,
+real quote budgets, missed/answered in-game calls, atomic costs, queued availability,
+work progression, rework, single payment, literal note handling, bounded history,
+version-1 migration, original icon/atlas loading, ambient animation controls and
+360/390px conversation/profile layouts. CI executes these alongside the complete
+original campaign/browser/portal suites before publication. See actual run results;
+this checklist alone is not a successful-test claim.
