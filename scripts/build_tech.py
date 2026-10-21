@@ -272,7 +272,7 @@ if (game_source / "index.html").is_file():
     (output / "igra/ACCEPTANCE.md").unlink(missing_ok=True)
     home_path = output / "index.html"
     markup = home_path.read_text(encoding="utf-8")
-    promo = '<section class="grad-game-card" aria-labelledby="grad-game-heading"><div><small>BRZO I LOKALNO · THE GAME</small><h2 id="grad-game-heading">Grad majstora</h2><p>Okupi ekipu, poveži sedam naselja i izgradi grad kojem komšiluk vjeruje. Originalna besplatna strategija: 35 ugovora, bez računa i instalacije.</p></div><a href="/igra/">Zaigraj Grad majstora ↗</a></section>'
+    promo = '<section class="grad-game-card" aria-labelledby="grad-game-heading"><div><small>BRZO I LOKALNO · THE GAME</small><h2 id="grad-game-heading">Grad majstora</h2><p>Počni kao samostalni majstor: primi poziv, dogovori posao, koristi alat i razvij vlastitu firmu. Originalna besplatna strategija, bez računa i instalacije.</p></div><a href="/igra/">Zaigraj Grad majstora ↗</a></section>'
     assert "</main>" in markup, "TECH homepage missing main"
     markup = markup.replace("</head>", '<link rel="stylesheet" href="/igra/portal-card.css"></head>', 1)
     markup = markup.replace("</main>", promo + "</main>", 1)

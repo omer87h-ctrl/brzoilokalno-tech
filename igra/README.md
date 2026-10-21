@@ -1,4 +1,60 @@
-# Grad majstora — Brzo i Lokalno
+# Grad majstora — career strategy by Brzo i Lokalno
+
+The primary mode is now **Majstorska karijera**. The player is Adnan, a carpenter
+who handles his first incoming client call, works with owned tools, and develops
+an independent workshop, employees, vehicle and business territories. Settlement
+construction is optional; the original 35-contract city campaign and sandbox
+remain separately selectable and backwards compatible.
+
+## Actual loop
+
+Client request → incoming call/clarification → agreed quote → materials and tool
+reservation → player/contractor/employee assignment → real travel/work → optional
+field routing puzzle → inspection, quality and payment → business investment.
+The player never receives a call from himself. Collaborators report completion;
+clients call to request a job or handover; suppliers call after actual delivery.
+
+Career has no 35-coin daily grant or housing tax. Company overhead, employee
+salaries, vehicle upkeep and unpaid liabilities are recorded. Contractors bring
+their tools and are paid by job. Employees use company tools and receive daily
+salary. Real tool instances have ownership, compatible skills, reservations,
+condition and work-shift wear. Workshop output, instant/next-day material orders,
+transport fuel and tool servicing change validated game state.
+
+Kvalitet drives reputation, actual complaints and lasting client-site upgrades.
+Business promotion requires completed jobs and acquired assets, not housing
+population. Mini games are optional: a no-wager once-per-day break wheel,
+original tool-card allocation game, a solvable seeded route puzzle, and a hands-on carpentry bench. The field
+puzzle advances an actual working job by one shift, including tool wear. It
+respects electrical-outage safety and never teleports a travelling worker.
+The carpentry bench has measured points, fastening, bounded mistakes/material waste,
+and a shared actual work-step/tool-wear finalizer. No cash bets, real money, paid spins, cashouts, accounts, microphone, GPS,
+backend, trackers or external APIs are introduced.
+
+## Contracts and checks
+
+`brzo.grad-majstora/4` adds `community.schema/1` with a closed company, phone,
+stock, story and mini-game representation. Formats 1–3 still import. New
+`bl.grad-majstora.v4.*` slots isolate state from older running tabs. Unknown
+historical expenses are not reconstructed. Fixtures use synthetic game data.
+
+`test_grad_career.cjs` covers real phone semantics, tool consumption, purchases,
+delivery exactly once, upkeep, mini-game execution and anti-repeat guards,
+legacy saves, and an entire solo-to-regional-company development path using
+legal commands, no city buildings and no rescue funds. `test_grad_career_browser.cjs`
+performs first call → quote → own tool → booked travel → field puzzle → handover
+→ workshop → tool service → supply → leisure, plus 320/360/390 layout,
+accessibility, offline persistence and format-3 migration. All older suites stay.
+Full career simulation is automated verification, not a human playtime or fun rating.
+Physical-device and full browser-engine coverage are not established.
+
+All new code and SVG interface icons are original project work. Reuse the
+previous project-generated building illustrations and owner branding. No third-party
+game source, game assets, fonts or new runtime dependencies are included.
+
+---
+Previous engineering record follows; its older version descriptions are historical.
+
 
 Original standalone single-player web strategy. No required accounts, GPS,
 backend, commercial API, telemetry, third-party runtime dependency or paid currency.

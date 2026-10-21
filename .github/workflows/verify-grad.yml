@@ -32,6 +32,7 @@ jobs:
           node scripts/test_grad_core.cjs
           node scripts/test_grad_dispatch.cjs
           node scripts/test_grad_quality.cjs
+          node scripts/test_grad_career.cjs
       - name: Real Chrome gameplay, mobile, storage, downloads and sharing
         shell: bash
         run: |
@@ -43,6 +44,7 @@ jobs:
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_living_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_quality_browser.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_career_browser.cjs
       - name: Preserve real game evidence
         if: always()
         uses: actions/upload-artifact@v4
