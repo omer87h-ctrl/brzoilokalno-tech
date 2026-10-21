@@ -99,3 +99,29 @@ for migration, calls, declined/accepted offers, a busy craftsman, actual reserva
 travel/work/payment, literal chat text, profiles, traffic pause/reduced motion,
 mobile accessibility and offline restart. Source snapshots and CI logs distinguish
 executed automated tests from device testing that has not been performed.
+
+## Version 3: quality and visible development
+
+Three distinct, originally generated architecture atlases are rendered by the same
+first-party renderer in the map and level previews (11 types × 3 tiers). Images
+are self-hosted, transparent, compressed WebP. PNG source generations remain
+outside the public repository; this repository records the distribution assets.
+No stock/game assets, fonts or new runtime libraries were added.
+
+Confirmed construction has a bounded 1.8-second visual scaffold/reveal. It adds no
+real-time waiting requirement or additional resource charge. Reduced motion shows
+the finished state immediately. Road actors participate in world depth ordering.
+
+`brzo.grad-majstora/3` contains dispatch schema 2 with `finishedDay`. Work quality
+is computed at actual completion; waiting to collect does not add a second lateness
+penalty. The recorded finish determines late statistics. For old saves, migration
+uses the genuine retained finish message where present; otherwise 0 means unknown,
+not an invented timestamp. Existing formats 1 and 2 are still imported. New
+`bl.grad-majstora.v3.*` slots isolate newer state from older running tabs.
+
+`node scripts/test_grad_quality.cjs` checks settlement, actual late work, historical
+migration, timestamp validation, level effects and a deterministic 120-day legal
+job/build simulation. `test_grad_quality_browser.cjs` verifies all 33 sprites,
+construction, tier UI, fresh-city undo/preferences, filters, exact equipment costs,
+legacy storage isolation, high-building picking, 320/360/390 layouts and offline
+restart. These complement all existing tests; see actual CI results.

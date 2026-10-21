@@ -65,8 +65,10 @@ jobs:
           export TEZ_CHROME="$(command -v google-chrome)"
           node scripts/test_grad_core.cjs
           node scripts/test_grad_dispatch.cjs
+          node scripts/test_grad_quality.cjs
           node scripts/test_grad_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_living_browser.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_quality_browser.cjs
           node scripts/test_workspace.cjs
           node scripts/test_visits.cjs
           node scripts/smoke_tech.cjs

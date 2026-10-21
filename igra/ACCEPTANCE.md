@@ -1,4 +1,4 @@
-# Grad majstora 1.0 — acceptance record
+# Grad majstora — acceptance record
 
 This checklist is paired with executable verification, not a claim that merely
 rendering the interface establishes completion.
@@ -33,3 +33,13 @@ version-1 migration, original icon/atlas loading, ambient animation controls and
 360/390px conversation/profile layouts. CI executes these alongside the complete
 original campaign/browser/portal suites before publication. See actual run results;
 this checklist alone is not a successful-test claim.
+
+## Quality acceptance, version 3
+
+See `docs/GRAD-QUALITY-AUDIT.md` for reproduced baseline defects and test scope.
+The additional quality suites verify actual settlement and completion timestamps,
+both historical formats, 120 simulated game days through legal commands, 33
+distinct sprite renders, actual construction/upgrade controls, clean new cities,
+filtered conversation details, full equipment costs and offline tiers. Public
+verification compares 17 exact game files, including the two new original atlases.
+Physical Android hardware remains a separate verification requirement.

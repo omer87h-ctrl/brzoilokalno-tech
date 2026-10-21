@@ -262,7 +262,7 @@ game_source = Path("igra")
 if (game_source / "index.html").is_file():
     shutil.copytree(game_source, output / "igra", dirs_exist_ok=True)
     (output / "igra/brand-icon.png").write_bytes(brand_icon)
-    for art_name in ("buildings", "game-icon"):
+    for art_name in ("buildings", "buildings-2", "buildings-3", "game-icon"):
         encoded = Path("assets") / ("grad-" + art_name + ".webp.base64")
         art = base64.b64decode(encoded.read_text().strip(), validate=True)
         assert art[:4] == b"RIFF" and art[8:12] == b"WEBP", "Invalid original game art"
