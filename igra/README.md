@@ -181,3 +181,20 @@ job/build simulation. `test_grad_quality_browser.cjs` verifies all 33 sprites,
 construction, tier UI, fresh-city undo/preferences, filters, exact equipment costs,
 legacy storage isolation, high-building picking, 320/360/390 layouts and offline
 restart. These complement all existing tests; see actual CI results.
+
+## Version 5: the world, cockpit and workroom
+
+The map now shows daylight streets, pavements, work scaffolds and actual owned
+workshop/vehicle presence. Real finished work and payment produce distinct bounded
+feedback. The first job has direct next-step guidance. Recorded history shows up to
+60 truthful daily maps without changing live state; older imports begin recording
+at their actual import day.
+
+Adnan can drive a rented/owned service vehicle over actual legal city roads to his
+booked client. The original perspective cockpit includes route guidance, steering,
+braking and parking. Arrival starts work, not payment. Water/electrical rooms use
+ordered real work actions and the existing tool-wear/work finalizer. Standard day
+travel and all earlier tools remain available. Format 5 preserves imports 1–4.
+
+See docs/GRAD-WORLD-AND-FIELDWORK.md and docs/GRAD-MOBILE-TESTING.md for contracts,
+resource bounds, test scope and the explicit physical-device verification limit.

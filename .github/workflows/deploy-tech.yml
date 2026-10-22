@@ -67,10 +67,15 @@ jobs:
           node scripts/test_grad_dispatch.cjs
           node scripts/test_grad_quality.cjs
           node scripts/test_grad_career.cjs
+          node scripts/test_grad_history.cjs
+          node scripts/test_grad_fieldwork.cjs
           node scripts/test_grad_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_living_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_quality_browser.cjs
           TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_career_browser.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_mobile.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_world_browser.cjs
+          TEZ_CHROME="$(command -v google-chrome)" node scripts/test_grad_fieldwork_browser.cjs
           node scripts/test_workspace.cjs
           node scripts/test_visits.cjs
           node scripts/smoke_tech.cjs
