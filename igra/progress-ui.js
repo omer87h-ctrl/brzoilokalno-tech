@@ -102,7 +102,7 @@
       if (!item) return;
       this.outcomesShown++;
       const {el, button} = this.p, site = D.sites(G.context)[item.site];
-      root.dataset.job = item.job;
+      root.dataset.outcomeJob = item.job;
       root.dataset.kind = item.kind;
       const mark = el('span', '✓', 'outcome-seal'); mark.setAttribute('aria-hidden', 'true');
       const copy = el('div');
