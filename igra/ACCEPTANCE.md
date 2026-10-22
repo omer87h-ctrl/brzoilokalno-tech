@@ -54,3 +54,12 @@ field work integration, caller
 roles, old-format preservation and mobile/offline behavior. Older settlement
 campaign tests run that explicit mode. Public validation compares 20 game files.
 Use the actual run logs and artifacts; this record alone is not a test result.
+
+## World and fieldwork acceptance, version 5
+
+New suites cover actual daily map history, current-frame consistency, imported
+origin, 60-day retention, storage bounds, real road-grid driving and fuel/rental
+charges, actual arrival, staged water/electric repair with tool wear, factual
+completion/payment feedback, direct first-task guidance and Android-profile CDP
+touch pan/pinch/cancel sequences. Existing suites are retained. Public verification
+compares 25 game files. Viewport automation is not physical Android verification.
