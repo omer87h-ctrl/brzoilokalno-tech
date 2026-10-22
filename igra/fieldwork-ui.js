@@ -24,8 +24,8 @@
     }
     reset(){this.stopHeld();this.mode='drive';this.paused=false;this.previous=null;this.transition=null;cancelAnimationFrame(this.raf);this.raf=0;}
     setActive(value){this.active=Boolean(value);if(!this.active){this.stopHeld();cancelAnimationFrame(this.raf);this.raf=0;}else this.draw();}
-    startDrive(job){const result=this.p.perform({type:'field_drive_start',job});if(!result)return;this.mode='drive';this.paused=false;this.p.selectTab('drive');this.render(this.p.state());}
-    startRepair(job){const result=this.p.perform({type:'field_repair_start',job});if(!result)return;this.mode='repair';this.p.selectTab('drive');this.render(this.p.state());}
+    startDrive(job){const result=this.p.perform({type:'field_drive_start',job});if(!result)return;this.mode='drive';this.paused=false;this.p.selectTab('drive');this.render(this.p.state());(this.mode==='drive'?this.drivePanel:this.repairPanel)?.scrollIntoView({block:'start',behavior:this.reduced?'auto':'smooth'});}
+    startRepair(job){const result=this.p.perform({type:'field_repair_start',job});if(!result)return;this.mode='repair';this.p.selectTab('drive');this.render(this.p.state());(this.mode==='drive'?this.drivePanel:this.repairPanel)?.scrollIntoView({block:'start',behavior:this.reduced?'auto':'smooth'});}
     root(){return document.getElementById('fieldwork-root');}
     build(){
       const root=this.root();if(!root||this.shell)return;
@@ -58,7 +58,7 @@
       this.pauseButton=button('Pauziraj vožnju',()=>{this.paused=!this.paused;this.stopHeld();this.render(this.p.state());});
       this.destinationButton=button('Otvori radnu lokaciju',()=>{const d=this.state?.community.fieldwork?.drive;if(d)this.p.openField();},'primary');
       bottom.append(this.pauseButton,this.destinationButton);
-      const how=el('p','Gas pomjera vozilo za jednu poziciju ceste. Drži za nastavak. Zakoči prije skretanja ili parkiranja. Strelice / WASD upravljaju vozilom; P parkira, R okreće vozilo.','fieldwork-help');
+      const how=el('p','Drži gas za vožnju. Prati navigaciju i zakoči prije skretanja ili parkiranja. Strelice / WASD upravljaju vozilom; P parkira, R okreće vozilo.','fieldwork-help');
       this.drivePanel.append(driveHeading,this.driveStage,this.instruction,this.routeText,this.controls,bottom,how);
       this.repairPanel=el('section',undefined,'repair-panel');this.repairPanel.id='repair-panel';
       this.repairTitle=el('h3');this.repairSummary=el('p');this.repairSummary.id='repair-summary';
@@ -97,7 +97,7 @@
     }
     renderDrive(s,d){
       const site=D.sites(G.context)[d.site],j=s.dispatch.jobs.find(j=>j.id===d.job);this.driveTitle.textContent='Adnan za volanom · '+site.name;
-      this.driveSummary.textContent=site.address+' · '+(d.rented?'Iznajmljeni servisni kombi':'Tvoje vozilo')+' · pređeno '+d.steps+' pozicija ceste.';
+      this.driveSummary.textContent=site.name+' · '+site.address+' · '+(d.rented?'Iznajmljeni servisni kombi':'Tvoje vozilo')+' · pređeno '+d.steps+' dionica.';
       const route=(j?F.drivePlan(s,j,G.context):null)||[],next=route[1];
       let text='Vožnja je završena.';
       if(d.status==='driving'){
@@ -107,7 +107,7 @@
         }else text='Trenutna ruta nije prohodna. Provjeri stanje ceste ili nastavi redovni obračun dana.';
       } else if(d.status==='arrived')text='Parkiran si kod klijenta. Dolazak je evidentiran; sada slijedi stvarni rad.';
       this.instruction.textContent=text;
-      this.routeText.textContent='Položaj '+d.x+', '+d.y+' · '+F.DIRECTIONS[d.heading].name+' · preostalo '+Math.max(0,route.length-1)+' pozicija do adrese.';
+      this.routeText.textContent=F.DIRECTIONS[d.heading].name+' · još '+Math.max(0,route.length-1)+' dionica do klijenta '+site.name+'.';
       const disabled=d.status!=='driving'||this.paused;
       for(const [action,b]of Object.entries(this.controlButtons)){b.disabled=disabled||(action==='park'&&(d.x!==d.destination[0]||d.y!==d.destination[1]||d.speed!==0));}
       this.pauseButton.hidden=d.status!=='driving';this.pauseButton.textContent=this.paused?'Nastavi upravljanje':'Pauziraj vožnju';
